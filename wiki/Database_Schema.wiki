@@ -1,0 +1,65 @@
+#summary Database schema outline
+
+=ER Diagram=
+[http://click-reminder.googlecode.com/svn/wiki/images/schema.png]
+
+=SQL Script=
+{{{
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+CREATE SCHEMA IF NOT EXISTS `clickremindme` DEFAULT CHARACTER SET utf8 ;
+USE `clickremindme` ;
+
+-- -----------------------------------------------------
+-- Table `clickremindme`.`item_props`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `clickremindme`.`item_props` (
+  `prop_name` VARCHAR(45) NULL ,
+  `prop_value` VARCHAR(45) NULL ,
+  `item_id` INT UNSIGNED NOT NULL )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `clickremindme`.`sessions`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `clickremindme`.`sessions` (
+  `session_id` VARCHAR(45) NOT NULL ,
+  `user_id` INT UNSIGNED NOT NULL ,
+  `last_activity` DATETIME NOT NULL ,
+  PRIMARY KEY (`session_id`, `user_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `clickremindme`.`items`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `clickremindme`.`items` (
+  `item_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `user_id` INT UNSIGNED NOT NULL ,
+  `sort_int` INT UNSIGNED NULL ,
+  PRIMARY KEY (`item_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `clickremindme`.`users`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `clickremindme`.`users` (
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(45) NULL ,
+  `email` VARCHAR(45) NULL ,
+  `password_md5` VARCHAR(32) NULL ,
+  PRIMARY KEY (`user_id`) ,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) ,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) )
+ENGINE = InnoDB;
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+}}}

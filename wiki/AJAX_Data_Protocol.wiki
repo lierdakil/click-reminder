@@ -4,9 +4,9 @@
 Request MUST have parameters `action`, `sid` and MAY have any number of additional parameters.
 Sid is a current session identifier. It is generated on login and stored in cookies.
 Action SHOULD be assigned the following values:
-* `getItemList`
-* `getItemProps`
-* `setItemProps`
+ * `getItemList`
+ * `getItemProps`
+ * `setItemProps`
 
 Depending on action, additional parameters MAY be reqired. Depending on the request, corresponding reply is formed. Parameters and replies are listed in table below.
 

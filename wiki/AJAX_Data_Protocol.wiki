@@ -1,16 +1,27 @@
 #summary Protocol description for AJAX messages.
 
 =Protocol=
-Request MUST have parameters `action`, `sid` and MAY have any number of additional parameters.
+Request MUST have parameters `action`, `sid` (with exception of login action) and MAY have any number of additional parameters.
 Sid is a current session identifier. It is generated on login and stored in cookies.
 Action SHOULD be assigned the following values:
+ * `login`
+ * `logout`
+ * `checkSID`
  * `getItemList`
  * `getItemProps`
  * `setItemProps`
+ * `addItem`
+ * `delItem`
+ * `clickItem`
 
 Depending on action, additional parameters MAY be reqired. Depending on the request, corresponding reply is formed. Parameters and replies are listed in table below.
 
-|| Action || Additional Parameters || Reply ||
+|| Action || Additional Parameters || Normal reply ||
+|| `action=login` || `user=str`<br>`pass=hash(str)` || `<sid>` ||
+|| `action=logout` || _None_ || `OK` ||
+|| `action=checkSID` || _None_ || `OK` ||
 || `action=getItemList` || _None_ || `id1,...,idN`<br>where idN is id of N-th item for a given user ||
-|| `action=getItemProps` || `itemID=int`<br>`properties="^(name1|...|nameN)$"`<br>where nameN is property name to be acquired || `name1=str`<br>...<br>`nameN=str` ||
-|| `action=setItemProps` || `itemID=int`<br>`name1=str`<br>`...`<br>`nameN=str`<br>where nameN is property name to be set || `OK`<br>or<br>`Error: <desc>` ||
+|| `action=getItemProps` || `iid=int`<br>`props="^(name1|...|nameN)$"`<br>where nameN is property name to be acquired || `name1=str`<br>...<br>`nameN=str` ||
+|| `action=setItemProps` || `iid=int`<br>`name1=str`<br>`...`<br>`nameN=str`<br>where nameN is property name to be set || `OK` ||
+|| `action=addItem` || _None_ || `<item_id>` ||
+|| `action=delItem` || `iid=int` || `OK` ||

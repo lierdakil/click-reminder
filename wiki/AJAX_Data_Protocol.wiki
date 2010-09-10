@@ -1,0 +1,16 @@
+#summary Protocol description for AJAX messages.
+
+=Protocol=
+Request MUST have parameters `action`, `sid` and MAY have any number of additional parameters.
+Sid is a current session identifier. It is generated on login and stored in cookies.
+Action SHOULD be assigned the following values:
+* `getItemList`
+* `getItemProps`
+* `setItemProps`
+
+Depending on action, additional parameters MAY be reqired. Depending on the request, corresponding reply is formed. Parameters and replies are listed in table below.
+
+|| Action || Additional Parameters || Reply ||
+|| `action=getItemList` || `userID=int` || `id1,...,idN`<br>where idN is id of N-th item for a given user ||
+|| `action=getItemProps` || `itemID=int`<br>`properties="^(name1|...|nameN)$"`<br>where nameN is property name to be acquired || `name1=str`<br>...<br>`nameN=str` ||
+|| `action=setItemProps` || `itemID=int`<br>`name1=str`<br>`...`<br>`nameN=str`<br>where nameN is property name to be set || `OK`<br>or<br>`Error: <desc>` ||

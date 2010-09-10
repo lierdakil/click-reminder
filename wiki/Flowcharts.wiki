@@ -1,0 +1,5 @@
+#summary All project's flowcharts for ease of commenting.
+
+login flowchart
+
+[http://click-reminder.googlecode.com/svn/wiki/images/login-flowchart.png]

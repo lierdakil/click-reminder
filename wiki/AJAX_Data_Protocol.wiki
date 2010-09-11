@@ -14,14 +14,26 @@ Action SHOULD be assigned the following values:
  * `delItem`
  * `clickItem`
 
-Depending on action, additional parameters MAY be reqired. Depending on the request, corresponding reply is formed. Parameters and replies are listed in table below.
+Depending on action, additional parameters MAY be reqired.
 
-|| Action || Additional Parameters || Normal reply ||
-|| `action=login` || `user=str`<br>`pass=hash(str)` || `<sid>` ||
-|| `action=logout` || _None_ || `OK` ||
-|| `action=checkSID` || _None_ || `OK` ||
-|| `action=getItemList` || _None_ || `id1,...,idN`<br>where idN is id of N-th item for a given user ||
-|| `action=getItemProps` || `iid=int`<br>`props="^(name1|...|nameN)$"`<br>where nameN is property name to be acquired || `name1=str`<br>...<br>`nameN=str` ||
-|| `action=setItemProps` || `iid=int`<br>`name1=str`<br>`...`<br>`nameN=str`<br>where nameN is property name to be set || `OK` ||
-|| `action=addItem` || _None_ || `<item_id>` ||
-|| `action=delItem` || `iid=int` || `OK` ||
+==Normal Operation==
+
+Depending on the request, corresponding reply is formed. Parameters and normal replies are listed in table below. Reply and request are listed in JSON. Actual format of data representation is discussed.
+
+|| Action || Request || Normal reply ||
+|| `login` || `{action:login,user:"str",pass=hash(str)}` || `[<sid>]` ||
+|| `logout` || `{action:logout,sid:<sid>}` || `{}` ||
+|| `checkSID` || `{action:checkSID,sid:<sid>}` || `{}` ||
+|| `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
+|| `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:"^(name1|...|nameN)$"}`<br>where nameN is property name to be acquired || `{name1:"value1",...,nameN="valueN"}` ||
+|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,name1:"value1",...,nameN="valueN"`<br>where nameN is property name to be set || `{}` ||
+|| `addItem` || `{action:addItem,sid:<sid>}` || `[<item_id>]` ||
+|| `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` || `{}` ||
+
+==Error reporting==
+
+Error reporting MAY be done using HTTP status codes. Normal reply is expected if status code is 200 OK, and error report if status is 500 Internal Server Error. Else, client SHOULD throw an error and stop.
+Error report reply MUST contain an integer field `errcode`. It also MAY contain one or more additional fields, depending on `errcode` value.
+Possible error codes are listed below along with description and possible additional fields.
+
+TODO: Error codes

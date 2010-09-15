@@ -19,8 +19,8 @@ Depending on action, additional parameters MAY be reqired.
 ==Normal Operation==
 
 Depending on the request, corresponding reply is formed. Parameters and normal replies are listed in table below. Reply and request are listed in JSON.
-Request messages are JSON-encoded and passed in POST field 'message'.
-Reply messages are alse JSON-encoded and are passed in HTTP body.
+Request messages are key-value pairs typical for POST request.
+Reply messages are in JSON and are passed in HTTP body.
 
 || Action || Request || Normal reply ||
 || `login` || `{action:login,user:"str",pass=hash(str)}` || `<sid>` ||

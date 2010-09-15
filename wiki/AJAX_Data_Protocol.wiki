@@ -18,16 +18,18 @@ Depending on action, additional parameters MAY be reqired.
 
 ==Normal Operation==
 
-Depending on the request, corresponding reply is formed. Parameters and normal replies are listed in table below. Reply and request are listed in JSON. Actual format of data representation is discussed.
+Depending on the request, corresponding reply is formed. Parameters and normal replies are listed in table below. Reply and request are listed in JSON.
+Request messages are JSON-encoded and passed in POST field 'message'.
+Reply messages are alse JSON-encoded and are passed in HTTP body.
 
 || Action || Request || Normal reply ||
-|| `login` || `{action:login,user:"str",pass=hash(str)}` || `[<sid>]` ||
+|| `login` || `{action:login,user:"str",pass=hash(str)}` || `<sid>` ||
 || `logout` || `{action:logout,sid:<sid>}` || `{}` ||
 || `checkSID` || `{action:checkSID,sid:<sid>}` || `{}` ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
 || `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:"^(name1|...|nameN)$"}`<br>where nameN is property name to be acquired || `{name1:"value1",...,nameN="valueN"}` ||
 || `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,name1:"value1",...,nameN="valueN"`<br>where nameN is property name to be set || `{}` ||
-|| `addItem` || `{action:addItem,sid:<sid>}` || `[<item_id>]` ||
+|| `addItem` || `{action:addItem,sid:<sid>}` || `<item_id>` ||
 || `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` || `{}` ||
 
 ==Error reporting==
@@ -36,4 +38,10 @@ Error reporting MAY be done using HTTP status codes. Normal reply is expected if
 Error report reply MUST contain an integer field `errcode`. It also MAY contain one or more additional fields, depending on `errcode` value.
 Possible error codes are listed below along with description and possible additional fields.
 
-TODO: Error codes
+|| Name || Value || Description || Additional fields ||
+|| no_message || 1 || Returned when there is no 'message' parameter in POST || None ||
+|| action_undef || 2 || Returned when message does not have 'action' property || None ||
+|| login_failure || 3 || Returned if login is failed: user/pass do not match or there is no requested user at all || None ||
+|| db_failure || 4 || Returned whenever there are database problems on server || `message` -- database message on error encountered ||
+
+More error codes to come!

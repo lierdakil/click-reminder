@@ -12,7 +12,6 @@ Action SHOULD be assigned the following values:
  * `setItemProps`
  * `addItem`
  * `delItem`
- * `clickItem`
 
 Depending on action, additional parameters MAY be reqired.
 

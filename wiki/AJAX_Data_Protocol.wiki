@@ -24,24 +24,26 @@ Reply messages are in JSON and are passed in HTTP body.
 
 || Action || Request || Normal reply ||
 || `login` || `{action:login,user:"str",pass=hash(str)}` || `<sid>` ||
-|| `logout` || `{action:logout,sid:<sid>}` || `{}` ||
-|| `checkSID` || `{action:checkSID,sid:<sid>}` || `{}` ||
+|| `logout` || `{action:logout,sid:<sid>}` ||  ||
+|| `checkSID` || `{action:checkSID,sid:<sid>}` ||  ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
 || `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props[]:[name1,...,nameN]}`<br>where nameN is property name to be acquired || `{name1:"value1",...,nameN:"valueN"}` ||
-|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,name1:"value1",...,nameN="valueN"`<br>where nameN is property name to be set || `{}` ||
+|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,name1:"value1",...,nameN="valueN"`<br>where nameN is property name to be set ||  ||
 || `addItem` || `{action:addItem,sid:<sid>}` || `<item_id>` ||
-|| `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` || `{}` ||
+|| `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` ||  ||
 
 ==Error reporting==
 
 Error reporting MAY be done using HTTP status codes. Normal reply is expected if status code is 200 OK, and error report if status is 500 Internal Server Error. Else, client SHOULD throw an error and stop.
 Error report reply MUST contain an integer field `errcode`. It also MAY contain one or more additional fields, depending on `errcode` value.
-Possible error codes are listed below along with description and possible additional fields.
+Possible error codes are listed below along with description.
 
-|| Name || Value || Description || Additional fields ||
-|| no_message || 1 || Returned when there is no 'message' parameter in POST || None ||
-|| action_undef || 2 || Returned when message does not have 'action' property || None ||
-|| login_failure || 3 || Returned if login is failed: user/pass do not match or there is no requested user at all || None ||
-|| db_failure || 4 || Returned whenever there are database problems on server || `message` -- database message on error encountered ||
+|| Name || Value || Description || 
+||ERR_NO_MSG||1||Returned when there is no 'message' parameter in POST||
+||ERR_NO_ACT||2||Returned when message does not have 'action' property||
+||ERR_LOGIN||3||Returned if login is failed: user/pass do not match or there is no requested user at all||
+||ERR_DB||4||Returned whenever there are database problems on server||
+||ERR_NO_SID||5||Sid expired, never existed, or was not provided at all||
+||ERR_NO_IID||6||No itemID provided||
 
 More error codes to come!

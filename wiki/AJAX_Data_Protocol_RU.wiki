@@ -1,11 +1,15 @@
 #summary Описание протокола обмена сообщениями фронтенда и бэкенда
+
 =Введение=
+
 Система строится на модели запрос-ответ: фронтенд ("клиент") посылает запросы, а бэкенд ("сервер"), в зависимости от данных, полученных в запросе, возвращает соответствующий ситуации ответ или сообщение об ошибке. При этом сервер не может слать запросы клиенту: это ограничение связано с техническими ограничениями парадигмы AJAX.
 
 =Общий формат сообщений=
-Запросы ДОЛЖНЫ содержать два параметра: `action` и `sid` (за некоторыми исключениями) и МОГУТ содержать любое число дополнительных параметров.
-Параметр `sid` ДОЛЖЕН содержать буквенно-цифровой уникальный идентификатор текущей сессии, переданный клиенту при логине и хранящийся в кукисах.
+
+Запросы ДОЛЖНЫ содержать параметр `action`. Так же, в зависимости от параметра `action` запросы могут быть ДОЛЖНЫ содержать любые другие параметры.
+
 В параметре `action` СЛЕДУЕТ передавать одну из следующих величин:
+
  * `login`
  * `logout`
  * `checkSID`
@@ -17,11 +21,10 @@
  * `registerUser`
  * `deleteUser`
 
-В зависимости от значения параметра `action`, могут требоваться дополнительные параметры.
-
 ==Формат запросов и ожидаемые ответы==
 
 Запросы представляют из себя JSON-строки, передаваемые в теле запроса POST с заголовком content-type: application/json.
+
 Ответы так же являются JSON-строками и передаются в теле HTTP-ответа с заголовком content-type: application/json.
 
 || Action || Запрос || Ожидаемый ответ ||
@@ -36,22 +39,29 @@
 || `registerUser` || `{action:registerUser,user:"str",email:"str",pass:"str"}` || _null_ ||
 || `deleteUser` || `{action:deleteUser,sid:<sid>,user:"str",email:"str",pass:"str"}` || _null_ ||
 
+Здесь `<sid>` -- буквенно-цифровой уникальный идентификатор текущей сессии, переданный клиенту при логине и хранящийся в кукисах.
+
+`<item_id>` -- уникальный целочисленный идентификатор элемента, полученный клиентом в ответ на запрос `getItemList` или `addItem` и хранящийся в свойствах объекта, являющегося визуальным представлением элемента.
+
+`"str"` -- некая строка.
+
 ==Сообщения об ошибках==
 
-Error reporting MAY be done using HTTP status codes. Normal reply is expected if status code is 200 OK, and error report if status is 500 Internal Server Error. Else, client SHOULD throw an error and stop.
-Error report reply MUST contain an integer field `errcode`. It also MAY contain one or more additional fields, depending on `errcode` value.
-Possible error codes are listed below along with description.
+Сообщения об ошибках передаются с использованием кодов статуса HTTP. Нормальный ответ сервера передается с кодом статуса 200 OK. Если же произошла ошибка, статус устанавливается в 500 Internal Server Error. При любых других статусах поведение клиента неопределено.
 
-|| Name || Value || Description || 
-||ERR_NO_MSG||1||Returned when there is no 'message' parameter in POST||
-||ERR_NO_ACT||2||Returned when message does not have 'action' property||
-||ERR_LOGIN||3||Returned if login is failed: user/pass do not match or there is no requested user at all||
-||ERR_DB||4||Returned whenever there are database problems on server||
-||ERR_NO_SID||5||Sid expired, never existed, or was not provided at all||
-||ERR_NO_IID||6||No itemID provided||
-||ERR_NO_USER||7||No username provided||
-||ERR_NO_EMAIL||8||No email provided||
-||ERR_NO_PASS||9||No password provided||
-||ERR_NO_PROPS||10||No props to set or read specified||
-||ERR_USER_EXISTS||11||On registration, such username already exists||
-||ERR_DELE_FAIL||12||Failed to delete user. Invalid data most probable||
+Отчет об ошибке представляет собой JSON-строку в теле HTTP ответа с с заголовком content-type: application/json. Он ДОЛЖЕН содержать целочисленное поле `errcode`. В зависимости от значения `errcode` так же может содержать другие поля.
+Возможные коды ошибок с описанием приведены ниже.
+
+|| Название || Значение || Описание || Запросы, вызывающие ||
+||ERR_NO_MSG||1||Запрос не является JSON-строкой или пуст|| _any_ ||
+||ERR_NO_ACT||2||Запрос не имеет параметра `action`|| _any_ ||
+||ERR_LOGIN||3||Невозможно войти: пользователя не существует или неверный пароль|| `login` ||
+||ERR_DB||4||Ошибка при запросе к базе данных|| _any_ ||
+||ERR_NO_SID||5||Идентификатор сессии истек, не существует или не был передан|| except `login`, `registerUser` ||
+||ERR_NO_IID||6||Идентификатор элемента не был передан|| `getItemProps`, `setItemProps`, `delItem` ||
+||ERR_NO_USER||7||Не передано имя пользователя|| `login`, `registerUser`, `deleteUser` ||
+||ERR_NO_EMAIL||8||Не передан email|| `registerUser`, `deleteUser` ||
+||ERR_NO_PASS||9||Не передан пароль|| `login`, `registerUser`, `deleteUser` ||
+||ERR_NO_PROPS||10||Не указаны свойства для чтения или записи|| `getItemProps`, `setItemProps` ||
+||ERR_USER_EXISTS||11||Указанный логин существует|| `registerUser` ||
+||ERR_DELE_FAIL||12||Не удалось удалить пользователя, наиболее вероятны неверные данные|| `deleteUser` ||

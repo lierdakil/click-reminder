@@ -3,9 +3,8 @@
 class setItemPropsAction extends ItemAction {
     protected $props = array();
 
-    function  __construct() {
-        global $message;
-        parent::__construct();
+    function  __construct($message) {
+        parent::__construct($message);
         foreach($message['props'] as $prop_name=>$prop_val) {
             $this->props[htmlspecialchars($prop_name,ENT_QUOTES)] =
                     htmlspecialchars($prop_val,ENT_QUOTES);

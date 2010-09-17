@@ -6,7 +6,7 @@ if(!defined('__IN_CLICK__'))
 class BaseAction {
     protected $mysql = null;
 
-    function __construct() {
+    function __construct($message) {
         global $CONFIG;
         $this->mysql = new mysqli($CONFIG['mysql_server'],$CONFIG['mysql_user'],
                 $CONFIG['mysql_password'],$CONFIG['mysql_database']);
@@ -61,9 +61,8 @@ class UserAction extends BaseAction {
             last_activity=NOW() WHERE session_id='$this->sid'");
     }
 
-    function  __construct() {
-        global $message;
-        parent::__construct();
+    function  __construct($message) {
+        parent::__construct($message);
         if(array_key_exists('sid', $message))
             $this->sid = htmlspecialchars($message['sid'],ENT_QUOTES);
         else
@@ -89,9 +88,8 @@ class ItemAction extends UserAction {
                     ERR_NO_IID);
     }
 
-    function  __construct() {
-        global $message;
-        parent::__construct();
+    function  __construct($message) {
+        parent::__construct($message);
         if(array_key_exists('iid', $message))
             $this->iid = htmlspecialchars($message['iid'],ENT_QUOTES);
         else

@@ -3,23 +3,19 @@
 if(!defined('__IN_CLICK__'))
     die('Hacking attempt!');
 
-class getItemPropsAction extends BaseAction {
-    protected $iid = null;
+class getItemPropsAction extends ItemAction {
     protected $props = '^(';
 
     function  __construct() {
+        global $message;
         parent::__construct();
-        if(array_key_exists('iid', $_POST))
-            $this->iid = htmlspecialchars($_POST['iid'],ENT_QUOTES);
-        else
-            throw new Exception ('No item id provided', ERR_NO_IID);
-        for ($i=0; $i<count($_POST['props']); $i++) {
-            $this->props .= htmlspecialchars($_POST['props'][$i],ENT_QUOTES).
-                    ($i<count($_POST['props'])-1?'|':')$');
+        for ($i=0; $i<count($message['props']); $i++) {
+            $this->props .= htmlspecialchars($message['props'][$i],ENT_QUOTES).
+                    ($i<count($message['props'])-1?'|':')$');
         }
     }
 
-    function exec() {
+    public function exec() {
         global $DB;
         $result = $this->db_query("SELECT prop_name,prop_value
             FROM $DB[item_props],$DB[items],$DB[sessions]
@@ -31,7 +27,7 @@ class getItemPropsAction extends BaseAction {
         foreach($result as $row) {
             $props[$row['prop_name']] = $row['prop_value'];
         }
-        return json_encode($props);
+        return $props;
     }
 }
 

@@ -4,14 +4,15 @@ if(!defined('__IN_CLICK__'))
     die('Hacking attempt!');
 
 class loginAction extends BaseAction {
-    protected $user = null;//htmlspecialchars($_POST['user'],ENT_QUOTES);
-    protected $pass = null;//htmlspecialchars($_POST['pass'],ENT_QUOTES);
+    protected $user = null;
+    protected $pass = null;
     protected $uid = null;
 
     function  __construct() {
+        global $message;
         parent::__construct(false);
-        $this->user = htmlspecialchars($_POST['user'],ENT_QUOTES);
-        $this->pass = htmlspecialchars($_POST['pass'],ENT_QUOTES);
+        $this->user = htmlspecialchars($message['user'],ENT_QUOTES);
+        $this->pass = htmlspecialchars($message['pass'],ENT_QUOTES);
     }
 
     private function uidFromUserPass()
@@ -48,7 +49,7 @@ class loginAction extends BaseAction {
         $this->uidFromUserPass();
         $this->cleanOldSid();
         $this->makeSID();
-        return json_encode($this->sid);
+        return $this->sid;
     }
 }
 ?>

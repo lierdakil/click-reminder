@@ -12,6 +12,8 @@ Action SHOULD be assigned the following values:
  * `setItemProps`
  * `addItem`
  * `delItem`
+ * `registerUser`
+ * `deleteUser`
 
 Depending on action, additional parameters MAY be reqired.
 
@@ -22,7 +24,7 @@ Request messages are in JSON and passed in POST body with content-type applicati
 Reply messages are also in JSON and are passed in HTTP body with content-type application/json.
 
 || Action || Request || Normal reply ||
-|| `login` || `{action:login,user:"str",pass:"hashstr")}` || `<sid>` ||
+|| `login` || `{action:login,user:"str",pass:"str")}` || `<sid>` ||
 || `logout` || `{action:logout,sid:<sid>}` || _null_ ||
 || `checkSID` || `{action:checkSID,sid:<sid>}` || _null_ ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
@@ -30,6 +32,8 @@ Reply messages are also in JSON and are passed in HTTP body with content-type ap
 || `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,props:{name1:"value1",...,nameN:"valueN"}}`<br>where nameN is property name to be set || _null_ ||
 || `addItem` || `{action:addItem,sid:<sid>}` || `<item_id>` ||
 || `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` || _null_ ||
+|| `registerUser` || `{action:registerUser,user:"str",email:"str",pass:"str"}` || _null_ ||
+|| `deleteUser` || `{action:deleteUser,sid:<sid>,user:"str",email:"str",pass:"str"}` || _null_ ||
 
 ==Error reporting==
 
@@ -44,3 +48,9 @@ Possible error codes are listed below along with description.
 ||ERR_DB||4||Returned whenever there are database problems on server||
 ||ERR_NO_SID||5||Sid expired, never existed, or was not provided at all||
 ||ERR_NO_IID||6||No itemID provided||
+||ERR_NO_USER||7||No username provided||
+||ERR_NO_EMAIL||8||No email provided||
+||ERR_NO_PASS||9||No password provided||
+||ERR_NO_PROPS||10||No props to set or read specified||
+||ERR_USER_EXISTS||11||On registration, such username already exists||
+||ERR_DELE_FAIL||12||Failed to delete user. Invalid data most probable||

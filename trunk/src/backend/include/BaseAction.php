@@ -36,6 +36,8 @@ class BaseAction {
     protected function db_query($query) {
         $query=str_replace("\n","",$query);
         $query=ereg_replace(" +"," ",$query);
+        if(strpos($query, ';') !== false)
+            throw new Exception("Query '$query' contains ';'!", ERR_DB);
         $result = $this->mysql->query($query);
         if ($result === true) {
             if($this->mysql->affected_rows>0)
@@ -102,6 +104,9 @@ class ItemAction extends UserAction {
         parent::__construct($message);
         $this->iid = $this->getMessageParam('iid',
                 "No IID provided", ERR_NO_IID);
+        #iid MUST be numeric. If not, it's not an IID!
+        if(!is_numeric($this->iid)) 
+            throw new Exception("Malformed IID '$this->iid'!", ERR_NO_IID);
     }
 }
 ?>

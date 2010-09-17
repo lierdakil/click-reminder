@@ -21,17 +21,16 @@
 
 ==Формат запросов и ожидаемые ответы==
 
-Depending on the request, corresponding reply is formed. Parameters and normal replies are listed in table below. Reply and request are listed in JSON.
-Request messages are in JSON and passed in POST body with content-type application/json .
-Reply messages are also in JSON and are passed in HTTP body with content-type application/json.
+Запросы представляют из себя JSON-строки, передаваемые в теле запроса POST с заголовком content-type: application/json.
+Ответы так же являются JSON-строками и передаются в теле HTTP-ответа с заголовком content-type: application/json.
 
-|| Action || Request || Normal reply ||
+|| Action || Запрос || Ожидаемый ответ ||
 || `login` || `{action:login,user:"str",pass:"str")}` || `<sid>` ||
 || `logout` || `{action:logout,sid:<sid>}` || _null_ ||
 || `checkSID` || `{action:checkSID,sid:<sid>}` || _null_ ||
-|| `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
-|| `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:[name1,...,nameN]}`<br>where nameN is property name to be acquired || `{name1:"value1",...,nameN:"valueN"}` ||
-|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,props:{name1:"value1",...,nameN:"valueN"}}`<br>where nameN is property name to be set || _null_ ||
+|| `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>idN -- численный уникальный идентификатор N-того элемента ||
+|| `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:[name1,...,nameN]}`<br>где nameN -- название свойств, которые требуется получить || `{name1:"value1",...,nameN:"valueN"}` ||
+|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,props:{name1:"value1",...,nameN:"valueN"}}`<br>где nameN название свойства, которому должно быть присвоено значение valueN || _null_ ||
 || `addItem` || `{action:addItem,sid:<sid>}` || `<item_id>` ||
 || `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` || _null_ ||
 || `registerUser` || `{action:registerUser,user:"str",email:"str",pass:"str"}` || _null_ ||

@@ -23,13 +23,13 @@ Reply messages are also in JSON and are passed in HTTP body with content-type ap
 
 || Action || Request || Normal reply ||
 || `login` || `{action:login,user:"str",pass:"hashstr")}` || `<sid>` ||
-|| `logout` || `{action:logout,sid:<sid>}` ||  ||
-|| `checkSID` || `{action:checkSID,sid:<sid>}` ||  ||
+|| `logout` || `{action:logout,sid:<sid>}` || _null_ ||
+|| `checkSID` || `{action:checkSID,sid:<sid>}` || _null_ ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
 || `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:[name1,...,nameN]}`<br>where nameN is property name to be acquired || `{name1:"value1",...,nameN:"valueN"}` ||
-|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,props:{name1:"value1",...,nameN:"valueN"}}`<br>where nameN is property name to be set ||  ||
+|| `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,props:{name1:"value1",...,nameN:"valueN"}}`<br>where nameN is property name to be set || _null_ ||
 || `addItem` || `{action:addItem,sid:<sid>}` || `<item_id>` ||
-|| `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` ||  ||
+|| `delItem` || `{action:delItem,sid:<sid>,iid:<item_id>}` || _null_ ||
 
 ==Error reporting==
 

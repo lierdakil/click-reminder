@@ -3,8 +3,6 @@
 if(!defined('__IN_CLICK__'))
     die('Hacking attempt!');
 
-require_once "checkSID.php";
-
 class getItemListAction extends UserAction {
     
     private function getItems() {
@@ -21,14 +19,7 @@ class getItemListAction extends UserAction {
     }
 
     public function exec() {
-        $items = $this->getItems();
-        if(empty($items))
-        {
-            #No such sid or no items?
-            $checkSid = new checkSIDAction();
-            $checkSid->exec(); //throws exception if no such sid
-        }
-        return $items;
+        return $this->getItems();
     }
 }
 

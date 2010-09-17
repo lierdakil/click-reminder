@@ -1,5 +1,8 @@
 <?php
 
+if(!defined('__IN_CLICK__'))
+    die('Hacking attempt!');
+
 class delItemAction extends ItemAction {
 
     private function delItem() {

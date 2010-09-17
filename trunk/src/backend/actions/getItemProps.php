@@ -8,10 +8,12 @@ class getItemPropsAction extends ItemAction {
 
     function  __construct($message) {
         parent::__construct($message);
-        for ($i=0; $i<count($message['props']); $i++) {
-            $this->props .= htmlspecialchars($message['props'][$i],ENT_QUOTES).
-                    ($i<count($message['props'])-1?'|':')$');
+        $props = $this->getMessageParam('props', 'No props list', ERR_NO_PROPS);
+        for ($i=0; $i<count($props); $i++) {
+            $this->props .= htmlspecialchars($props[$i],ENT_QUOTES).
+                    ($i<count($props)-1?'|':'');
         }
+        $this->props .= ')$';
     }
 
     public function exec() {

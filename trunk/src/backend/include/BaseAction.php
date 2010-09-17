@@ -5,15 +5,27 @@ if(!defined('__IN_CLICK__'))
 
 class BaseAction {
     protected $mysql = null;
+    protected $message = null;
 
     function __construct($message) {
         global $CONFIG;
+        $this->message=$message;
         $this->mysql = new mysqli($CONFIG['mysql_server'],$CONFIG['mysql_user'],
                 $CONFIG['mysql_password'],$CONFIG['mysql_database']);
         if($this->mysql->connect_error) {
-            $message=$this->mysql->error;
-            throw new Exception($message,ERR_DB);
+            $mess=$this->mysql->error;
+            throw new Exception($mess,ERR_DB);
         }
+    }
+
+    protected function getMessageParam($param,$err_message,$err_no) {
+        if(array_key_exists($param, $this->message))
+            if(is_string($this->message[$param]))
+                return htmlspecialchars($this->message[$param],ENT_QUOTES);
+            else
+                return $this->message[$param];
+        else
+            throw new Exception($err_message, $err_no);
     }
 
     /* returns true on successful call without result if affected rows>0
@@ -63,10 +75,8 @@ class UserAction extends BaseAction {
 
     function  __construct($message) {
         parent::__construct($message);
-        if(array_key_exists('sid', $message))
-            $this->sid = htmlspecialchars($message['sid'],ENT_QUOTES);
-        else
-            throw new Exception("No SID provided", ERR_NO_SID);
+        $this->sid = $this->getMessageParam('sid',
+                'No SID provided', ERR_NO_SID);
         $this->checkSIDValid();
         $this->updateLastActivity();
     }
@@ -90,10 +100,8 @@ class ItemAction extends UserAction {
 
     function  __construct($message) {
         parent::__construct($message);
-        if(array_key_exists('iid', $message))
-            $this->iid = htmlspecialchars($message['iid'],ENT_QUOTES);
-        else
-            throw new Exception("No IID provided", ERR_NO_IID);
+        $this->iid = $this->getMessageParam('iid',
+                "No IID provided", ERR_NO_IID);
     }
 }
 ?>

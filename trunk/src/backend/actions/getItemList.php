@@ -6,7 +6,6 @@ if(!defined('__IN_CLICK__'))
 require_once "checkSID.php";
 
 class getItemListAction extends UserAction {
-    protected $items = array();
     
     private function getItems() {
         global $DB;
@@ -16,19 +15,20 @@ class getItemListAction extends UserAction {
             ORDER BY sort_int ASC");
         foreach($result as $row)
         {
-            $this->items[] = intval($row['item_id']);
+            $items[] = intval($row['item_id']);
         }
+        return $items;
     }
 
     public function exec() {
-        $this->getItems();
-        if(empty($this->items))
+        $items = $this->getItems();
+        if(empty($items))
         {
             #No such sid or no items?
             $checkSid = new checkSIDAction();
             $checkSid->exec(); //throws exception if no such sid
         }
-        return $this->items;
+        return $items;
     }
 }
 

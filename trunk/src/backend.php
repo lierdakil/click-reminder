@@ -16,7 +16,7 @@ try {
         if(in_array($message['action'].'.php', $actions)) {
             require_once 'backend/actions/'.$message['action'].'.php';
             $className = $message['action'].'Action';
-            $action = new $className();
+            $action = new $className($message);
             $reply = $action->exec();
         } else {
             throw new Exception("No action provided",ERR_NO_ACT);

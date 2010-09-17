@@ -6,9 +6,8 @@ if(!defined('__IN_CLICK__'))
 class getItemPropsAction extends ItemAction {
     protected $props = '^(';
 
-    function  __construct() {
-        global $message;
-        parent::__construct();
+    function  __construct($message) {
+        parent::__construct($message);
         for ($i=0; $i<count($message['props']); $i++) {
             $this->props .= htmlspecialchars($message['props'][$i],ENT_QUOTES).
                     ($i<count($message['props'])-1?'|':')$');

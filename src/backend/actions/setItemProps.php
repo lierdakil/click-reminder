@@ -1,11 +1,15 @@
 <?php
 
+if(!defined('__IN_CLICK__'))
+    die('Hacking attempt!');
+
 class setItemPropsAction extends ItemAction {
     protected $props = array();
 
     function  __construct($message) {
         parent::__construct($message);
-        foreach($message['props'] as $prop_name=>$prop_val) {
+        $props = $this->getMessageParam('props', 'No props list', ERR_NO_PROPS);
+        foreach($props as $prop_name=>$prop_val) {
             $this->props[htmlspecialchars($prop_name,ENT_QUOTES)] =
                     htmlspecialchars($prop_val,ENT_QUOTES);
         }

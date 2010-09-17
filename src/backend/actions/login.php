@@ -9,8 +9,10 @@ class loginAction extends BaseAction {
 
     function  __construct($message) {
         parent::__construct($message);
-        $this->user = htmlspecialchars($message['user'],ENT_QUOTES);
-        $this->pass = htmlspecialchars($message['pass'],ENT_QUOTES);
+        $this->user = $this->getMessageParam('user',
+                "No username provided", ERR_NO_USER);
+        $this->pass = md5($this->getMessageParam('pass',
+                "No password provided", ERR_NO_PASS));
     }
 
     private function uidFromUserPass()

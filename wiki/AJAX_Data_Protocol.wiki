@@ -22,7 +22,7 @@ Request messages are in JSON and passed in POST body with content-type applicati
 Reply messages are also in JSON and are passed in HTTP body with content-type application/json.
 
 || Action || Request || Normal reply ||
-|| `login` || `{action:login,user:"str",pass=hash(str)}` || `<sid>` ||
+|| `login` || `{action:login,user:"str",pass:"hashstr")}` || `<sid>` ||
 || `logout` || `{action:logout,sid:<sid>}` ||  ||
 || `checkSID` || `{action:checkSID,sid:<sid>}` ||  ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
@@ -44,5 +44,3 @@ Possible error codes are listed below along with description.
 ||ERR_DB||4||Returned whenever there are database problems on server||
 ||ERR_NO_SID||5||Sid expired, never existed, or was not provided at all||
 ||ERR_NO_IID||6||No itemID provided||
-
-More error codes to come!

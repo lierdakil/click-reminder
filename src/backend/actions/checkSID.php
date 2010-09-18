@@ -5,8 +5,8 @@ if(!defined('__IN_CLICK__'))
 
 class checkSIDAction extends UserAction {
     public function exec() {
-        #Dummy function. All checks are in UserAction
-        return null;
+        #Return current microtimestamp
+        return microtime(true);
     }
 }
 

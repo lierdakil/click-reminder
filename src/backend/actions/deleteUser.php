@@ -21,17 +21,12 @@ class deleteUserAction extends UserAction {
     private function deleteUser() {
         global $DB;
         $result = $this->db_query(
-                "DELETE FROM $DB[users],$DB[sessions],$DB[items],$DB[item_props] ".
+                "DELETE FROM $DB[users] ".
                 "USING $DB[sessions] NATURAL JOIN $DB[users] ".
-                "NATURAL LEFT JOIN $DB[items] NATURAL LEFT JOIN $DB[item_props] ".
                 "WHERE session_id='$this->sid' AND username='$this->user' ".
                 "AND password_md5='$this->pass' AND email='$this->email'");
         if(!$result)
             throw new Exception("Delete failed!",ERR_DELE_FAIL);
-        #now clean any stale sids if any
-        $this->db_query("DELETE FROM $DB[sessions] ".
-                "USING $DB[sessions] NATURAL LEFT JOIN $DB[users] ".
-                "WHERE username IS NULL");
     }
 
     public function exec() {

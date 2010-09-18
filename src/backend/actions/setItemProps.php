@@ -15,28 +15,26 @@ class setItemPropsAction extends ItemAction {
         }
     }
 
-    private function setItemProp($prop_name, $prop_value) {
+    private function setItemProps() {
         global $DB;
-        $result=$this->db_query("SELECT item_id
-            FROM $DB[item_props]
-            WHERE item_id=$this->iid
-                AND prop_name='$prop_name'
-            LIMIT 1");
-        if(empty($result))
-            $this->db_query("INSERT INTO $DB[item_props]
-                    (prop_name,prop_value,item_id) VALUES
-                    ('$prop_name','$prop_value',$this->iid)");
-        else
-            $this->db_query("UPDATE $DB[item_props] SET
-                    prop_value='$prop_value'
-                    WHERE prop_name='$prop_name'
-                        AND item_id=$this->iid");
+        $values="";
+        foreach($this->props as $name=>$value)
+            $values[] = "('$name', '$value', $this->iid)";
+        $strvalues=implode(',', $values);
+
+        $this->db_query("INSERT INTO $DB[item_props] ".
+                "(prop_name,prop_value,item_id) VALUES $strvalues".
+                "ON DUPLICATE KEY UPDATE prop_value=VALUES(prop_value)");
+
+        $timestamp = microtime(true);
+        $this->db_query("UPDATE $DB[items] SET ".
+                "timestamp=$timestamp ".
+                "WHERE item_id=$this->iid");
     }
 
     public function exec() {
         $this->checkItemBelongs();
-        foreach($this->props as $name=>$value)
-            $this->setItemProp($name, $value);
+        $this->setItemProps();
         return null;
     }
 }

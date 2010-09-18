@@ -27,7 +27,7 @@ Reply messages are also in JSON and are passed in HTTP body with content-type ap
 || Action || Request || Normal reply ||
 || `login` || `{action:login,user:"str",pass:"str")}` || `<sid>` ||
 || `logout` || `{action:logout,sid:<sid>}` || _null_ ||
-|| `checkSID` || `{action:checkSID,sid:<sid>}` || <timestamp> ||
+|| `checkSID` || `{action:checkSID,sid:<sid>}` || `<timestamp>` ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
 || `getUpdateList` || `{action:getItemList,sid:<sid>,timestamp:<timestamp>}` || `[id1,...,idN]`<br>where idN is id of N-th item for a given user ||
 || `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:[name1,...,nameN]}`<br>where nameN is property name to be acquired || `{name1:"value1",...,nameN:"valueN"}` ||

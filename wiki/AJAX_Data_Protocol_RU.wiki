@@ -31,7 +31,7 @@
 || Action || Запрос || Ожидаемый ответ ||
 || `login` || `{action:login,user:"str",pass:"str")}` || `<sid>` ||
 || `logout` || `{action:logout,sid:<sid>}` || _null_ ||
-|| `checkSID` || `{action:checkSID,sid:<sid>}` || <timestamp> ||
+|| `checkSID` || `{action:checkSID,sid:<sid>}` || `<timestamp>` ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>idN -- численный уникальный идентификатор N-того элемента ||
 || `getUpdateList` || `{action:getItemList,sid:<sid>,timestamp:<timestamp>}` || `[id1,...,idN]`<br>idN -- численный уникальный идентификатор N-того элемента ||
 || `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:[name1,...,nameN]}`<br>где nameN -- название свойств, которые требуется получить || `{name1:"value1",...,nameN:"valueN"}` ||

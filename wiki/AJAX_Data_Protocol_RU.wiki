@@ -33,7 +33,7 @@
 || `logout` || `{action:logout,sid:<sid>}` || _null_ ||
 || `checkSID` || `{action:checkSID,sid:<sid>}` || `<timestamp>` ||
 || `getItemList` || `{action:getItemList,sid:<sid>}` || `[id1,...,idN]`<br>idN -- численный уникальный идентификатор N-того элемента ||
-|| `getUpdateList` || `{action:getItemList,sid:<sid>,timestamp:<timestamp>}` || `[id1,...,idN]`<br>idN -- численный уникальный идентификатор N-того элемента ||
+|| `getUpdateList` || `{action:getItemList,sid:<sid>,time:<timestamp>}` || `{time:<new_timestamp>,items:[id1,...,idN]}`<br>idN -- численный уникальный идентификатор N-того элемента ||
 || `getItemProps` || `{action:getItemProps,sid:<sid>,iid:<item_id>,props:[name1,...,nameN]}`<br>где nameN -- название свойств, которые требуется получить || `{name1:"value1",...,nameN:"valueN"}` ||
 || `setItemProps` || `{action:setItemProps,sid:<sid>,iid:<item_id>,props:{name1:"value1",...,nameN:"valueN"}}`<br>где nameN название свойства, которому должно быть присвоено значение valueN || _null_ ||
 || `addItem` || `{action:addItem,sid:<sid>}` || `<item_id>` ||

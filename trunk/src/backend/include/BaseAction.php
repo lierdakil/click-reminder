@@ -59,6 +59,14 @@ class BaseAction {
 class UserAction extends BaseAction {
     protected $sid = null;
 
+    function  __construct($message) {
+        parent::__construct($message);
+        $this->sid = $this->getMessageParam('sid',
+                'No SID provided', ERR_NO_SID);
+        $this->checkSIDValid();
+        $this->updateLastActivity();
+    }
+
     private function checkSIDValid() {
         global $DB;
         $result = $this->db_query("SELECT session_id FROM $DB[sessions]
@@ -74,18 +82,19 @@ class UserAction extends BaseAction {
         $this->db_query("UPDATE $DB[sessions] SET
             last_activity=NOW() WHERE session_id='$this->sid'");
     }
-
-    function  __construct($message) {
-        parent::__construct($message);
-        $this->sid = $this->getMessageParam('sid',
-                'No SID provided', ERR_NO_SID);
-        $this->checkSIDValid();
-        $this->updateLastActivity();
-    }
 }
 
 class ItemAction extends UserAction {
     protected $iid = null;
+
+    function  __construct($message) {
+        parent::__construct($message);
+        $this->iid = $this->getMessageParam('iid',
+                "No IID provided", ERR_NO_IID);
+        #iid MUST be numeric. If not, it's not an IID!
+        if(!is_numeric($this->iid))
+            throw new Exception("Malformed IID '$this->iid'!", ERR_NO_IID);
+    }
 
     protected function checkItemBelongs() {
         global $DB;
@@ -98,15 +107,6 @@ class ItemAction extends UserAction {
         if(empty($result))
             throw new Exception("Item does not belong to user or invalid item",
                     ERR_NO_IID);
-    }
-
-    function  __construct($message) {
-        parent::__construct($message);
-        $this->iid = $this->getMessageParam('iid',
-                "No IID provided", ERR_NO_IID);
-        #iid MUST be numeric. If not, it's not an IID!
-        if(!is_numeric($this->iid)) 
-            throw new Exception("Malformed IID '$this->iid'!", ERR_NO_IID);
     }
 }
 ?>

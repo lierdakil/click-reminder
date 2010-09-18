@@ -15,5 +15,6 @@ define('ERR_NO_PASS', 9); #No password provided
 define('ERR_NO_PROPS', 10); #No props to set or read specified
 define('ERR_USER_EXISTS', 11); #On registration, such username already exists
 define('ERR_DELE_FAIL', 12); #Failed to delete user. Invalid data most probable
+define('ERR_NO_TIMESTAMP', 13); #No timestamp provided
 
 ?>

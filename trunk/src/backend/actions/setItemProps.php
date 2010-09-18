@@ -10,17 +10,16 @@ class setItemPropsAction extends ItemAction {
         parent::__construct($message);
         $props = $this->getMessageParam('props', 'No props list', ERR_NO_PROPS);
         foreach($props as $prop_name=>$prop_val) {
-            $this->props[htmlspecialchars($prop_name,ENT_QUOTES)] =
-                    htmlspecialchars($prop_val,ENT_QUOTES);
+            $this->props[] = "('".htmlspecialchars($prop_name,ENT_QUOTES).
+                    "', '".htmlspecialchars($prop_val,ENT_QUOTES).
+                    "', $this->iid)";
+                    
         }
     }
 
     private function setItemProps() {
         global $DB;
-        $values="";
-        foreach($this->props as $name=>$value)
-            $values[] = "('$name', '$value', $this->iid)";
-        $strvalues=implode(',', $values);
+        $strvalues=implode(',', $this->props);
 
         $this->db_query("INSERT INTO $DB[item_props] ".
                 "(prop_name,prop_value,item_id) VALUES $strvalues".

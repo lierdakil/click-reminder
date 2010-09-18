@@ -8,7 +8,7 @@ class getUpdateListAction extends UserAction {
 
     function  __construct($message) {
         parent::__construct($message);
-        $this->timestamp = $this->getMessageParam('timestamp',
+        $this->timestamp = $this->getMessageParam('time',
                 'No timestamp provided', ERR_NO_TIMESTAMP);
         if(!is_numeric($this->timestamp))
             throw new Exception('Invalid timestamp provided', ERR_NO_TIMESTAMP);
@@ -29,7 +29,12 @@ class getUpdateListAction extends UserAction {
     }
 
     public function exec() {
-        return $this->getUpdatedItems();
+        $timestamp = microtime(true);
+        $items = $this->getUpdatedItems();
+        return array(
+            'time' => $timestamp,
+            'items' => $items,
+                );
     }
 }
 

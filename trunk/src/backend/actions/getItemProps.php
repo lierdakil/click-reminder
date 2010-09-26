@@ -18,13 +18,12 @@ class getItemPropsAction extends ItemAction {
 
     public function exec() {
         global $DB;
-        $result = $this->db_query("SELECT prop_name,prop_value
-            FROM $DB[item_props],$DB[items],$DB[sessions]
-            WHERE $DB[items].item_id=$this->iid
-            AND $DB[item_props].item_id=$this->iid
-            AND $DB[items].user_id=$DB[sessions].user_id
-            AND session_id='$this->sid'
-            AND prop_name REGEXP '$this->props'");
+        $result = $this->db_query("SELECT prop_name,prop_value ".
+            "FROM $DB[item_props],$DB[items] ".
+            "WHERE $DB[items].item_id=$this->iid ".
+            "AND $DB[item_props].item_id=$this->iid ".
+            "AND $DB[items].user_id=$this->uid ".
+            "AND prop_name REGEXP '$this->props'");
         foreach($result as $row) {
             $props[$row['prop_name']] = $row['prop_value'];
         }

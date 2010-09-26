@@ -5,7 +5,7 @@ define('__IN_CLICK__', true);
 require_once 'backend/include/config.php';
 require_once 'backend/include/errors.php';
 require_once 'backend/include/BaseAction.php';
-ini_set('display_errors', '1');
+ini_set('display_errors', '0');
 
 $message = file_get_contents('php://input');
 $message = json_decode($message, true);

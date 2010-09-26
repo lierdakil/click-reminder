@@ -1,6 +1,6 @@
 <?php
 
-if(!defined('__IN_CLICK__'))
+if (!defined('__IN_CLICK__'))
     die('Hacking attempt!');
 
 $CONFIG = array(
@@ -15,6 +15,8 @@ $DB = array(
     'sessions' => 'sessions',
     'items' => 'items',
     'item_props' => 'item_props',
-)
+    'log' => 'log',
+);
 
+define('DEBUG', false);
 ?>

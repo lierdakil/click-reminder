@@ -16,13 +16,11 @@ class getUpdateListAction extends UserAction {
     
     private function getUpdatedItems() {
         global $DB;
-        $result = $this->db_query("SELECT item_id FROM $DB[sessions], ".
-            "$DB[items] WHERE session_id='$this->sid' AND ".
-            "timestamp > $this->timestamp AND ".
-            "$DB[sessions].user_id=$DB[items].user_id ".
+        $result = $this->db_query("SELECT item_id FROM $DB[items] ".
+            "WHERE timestamp > $this->timestamp AND ".
+            "user_id=$this->uid ".
             "ORDER BY sort_int ASC");
-        foreach($result as $row)
-        {
+        foreach($result as $row) {
             $items[] = intval($row['item_id']);
         }
         return $items;

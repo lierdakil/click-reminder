@@ -1,33 +1,35 @@
 <?php
 
-if(!defined('__IN_CLICK__'))
+if (!defined('__IN_CLICK__'))
     die('Hacking attempt!');
 
 class setItemPropsAction extends ItemAction {
+
     protected $props = array();
 
-    function  __construct($message) {
+    function __construct($message) {
         parent::__construct($message);
         $props = $this->getMessageParam('props', 'No props list', ERR_NO_PROPS);
-        foreach($props as $prop_name=>$prop_val) {
-            $this->props[] = "('".htmlspecialchars($prop_name,ENT_QUOTES).
-                    "', '".htmlspecialchars($prop_val,ENT_QUOTES).
+        foreach ($props as $prop_name => $prop_val) {
+            $this->props[] = "('" . htmlspecialchars($prop_name, ENT_QUOTES) .
+                    "', '" . htmlspecialchars($prop_val, ENT_QUOTES) .
                     "', $this->iid)";
-                    
         }
     }
 
     private function setItemProps() {
         global $DB;
-        $strvalues=implode(',', $this->props);
+        $strvalues = implode(',', $this->props);
 
-        $this->db_query("INSERT INTO $DB[item_props] ".
-                "(prop_name,prop_value,item_id) VALUES $strvalues".
-                "ON DUPLICATE KEY UPDATE prop_value=VALUES(prop_value)");
+        if (!empty($strvalues)) {
+            $this->db_query("INSERT INTO $DB[item_props] " .
+                    "(prop_name,prop_value,item_id) VALUES $strvalues" .
+                    "ON DUPLICATE KEY UPDATE prop_value=VALUES(prop_value)");
+        }
 
         $timestamp = microtime(true);
-        $this->db_query("UPDATE $DB[items] SET ".
-                "timestamp=$timestamp ".
+        $this->db_query("UPDATE $DB[items] SET " .
+                "timestamp=$timestamp " .
                 "WHERE item_id=$this->iid");
     }
 
@@ -36,5 +38,7 @@ class setItemPropsAction extends ItemAction {
         $this->setItemProps();
         return null;
     }
+
 }
+
 ?>
